@@ -231,9 +231,10 @@ def second():
 
 @app.route('/benzap', methods=['GET'])
 def benza():
-    if request.method == 'GET':
-        eman = request.args.get('web', session.get('eman'))  # Use 'web' query if present
-        dman = session.get('ins')
+    # Get 'web' parameter either from session or request.args
+    eman = request.args.get('web') or session.get('eman')
+    dman = session.get('ins')
+
     return render_template('ind.html', eman=eman, dman=dman)
 
 
